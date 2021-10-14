@@ -1,0 +1,29 @@
+# Commands to start on workspace startup
+workspaceLocation: laraboot-jetstream-demo/src
+tasks:
+  - name: Install cli
+    openMode: tab-after
+    init: npm i -g @laraboot-io/cli
+    command: |
+      readonly PHP_VERSION="8.0"
+      readonly PROJECT_NAME="rector-demo"
+      readonly PROJECT_HOME=$(pwd)
+
+      # Enable network communication with Docker socket.
+      sudo chmod 666 /var/run/docker.sock
+
+      laraboot --version
+      laraboot new "${PROJECT_NAME}" --php-version="${PHP_VERSION}.*" || exit 125
+      cd $PROJECT_NAME || exit 126
+
+      cp ../buildpack.yml .
+
+      sudo chmod -R 777 .
+
+      laraboot task add @core/laraboot-rector --format=file -vvv
+      laraboot build --pack-params default-process=task
+      laraboot run --port=9000
+# Ports to expose on workspace startup
+ports:
+  - port: 9000
+    onOpen: open-preview

@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - integration
+  release:
+    types: [ published ]
+
+jobs:
+  integration:
+    name: Build Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ "8.0" ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup PHP with PECL extension
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Setup laraboot CLI
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+        uses: laraboot-io/github-actions/setup-cli@cli-actions
+      - name: Install dependencies
+        uses: buildpacks/github-actions/setup-pack@v4.1.0
+      - name: Build app
+        id: build
+        env:
+          DEBUG: "*"
+          ECR_REGISTRY: ghcr.io/laraboot-io
+          PHP_VERSION: ${{ matrix.php }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          AWS_REGION: us-east-1
+          AWS_DEFAULT_REGION: us-east-1
+        run: |
+          chmod -R +x ./scripts
+          ./scripts/build.sh
+
+      - name: Upload buildpacks
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-php${{ matrix.php }}
+          path: /home/runner/work/laraboot-rector-demo/laraboot-rector-demo/app.tar.gz
