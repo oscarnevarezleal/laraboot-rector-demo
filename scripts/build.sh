@@ -23,7 +23,7 @@ laraboot build --pack-params default-process=task
 docker images
 
 # Grab tar file from image
-image_id=$(docker run -id $PROJECT_NAME)
+image_id=$(docker run -id rector-demo)
 docker export "$image_id" >image-app.tar.gz
 mkdir tmpy && tar -xf image-app.tar.gz -C tmpy
 tree -L 1 tmpy
