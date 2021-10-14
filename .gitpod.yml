@@ -17,6 +17,7 @@ tasks:
       cd $PROJECT_NAME || exit 126
 
       cp ../buildpack.yml .
+      cp ../rector.php .
 
       sudo chmod -R 777 .
 
