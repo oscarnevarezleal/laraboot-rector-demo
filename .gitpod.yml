@@ -1,5 +1,5 @@
 # Commands to start on workspace startup
-workspaceLocation: laraboot-jetstream-demo/src
+workspaceLocation: laraboot-rector-demo/src
 tasks:
   - name: Install cli
     openMode: tab-after
