@@ -17,8 +17,8 @@ cp ../src/rector.php .
 
 sudo chmod -R 777 .
 
-laraboot task add @core/laraboot-rector --format=file -vvv
-laraboot build --pack-params default-process=task
+laraboot task add @core/laraboot-rector --format=file
+laraboot build --pack-params default-process=task -vvv
 
 docker images
 
