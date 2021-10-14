@@ -20,6 +20,8 @@ sudo chmod -R 777 .
 laraboot task add @core/laraboot-rector --format=file -vvv
 laraboot build --pack-params default-process=task
 
+docker images
+
 # Grab tar file from image
 image_id=$(docker run -id $PROJECT_NAME)
 docker export "$image_id" >image-app.tar.gz
