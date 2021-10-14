@@ -21,7 +21,7 @@ laraboot task add @core/laraboot-rector --format=file -vvv
 laraboot build --pack-params default-process=task
 
 # Grab tar file from image
-image_id=$(docker run -id rectorized-app)
+image_id=$(docker run -id $PROJECT_NAME)
 docker export "$image_id" >image-app.tar.gz
 mkdir tmpy && tar -xf image-app.tar.gz -C tmpy
 tree -L 1 tmpy
